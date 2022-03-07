@@ -27,15 +27,36 @@ export default {
   },
   methods: {
     addTask() {
-      this.demoTasks.unshift({ data: this.newTask, id: this.demoTasks.length });
+      let check = true; //flag to check if task already exists
+      this.demoTasks.map((task) => {
+        if (task.data === this.newTask) {
+          check = false;
+        }
+      });
+      if (check) {
+        this.demoTasks.unshift({
+          data: this.newTask,
+          id: this.demoTasks.length,
+        });
+      }
     },
     deleteTask(taskId) {
       let prevTasks = [...this.demoTasks];
       let newDemoTasks = prevTasks.filter((task) => {
-        //filtering task that matches the description
+        //filtering task with same ID
         return task.id !== taskId;
       });
       this.demoTasks = newDemoTasks;
+    },
+    editTask(taskId) {
+      console.log(taskId);
+      this.demoTasks.map((task) => {
+        if (task.id == taskId) {
+          //remove task from list and pass to input
+          this.deleteTask(taskId);
+          this.newTask = task.data;
+        }
+      });
     },
   },
   components: { TaskCell },
@@ -47,7 +68,7 @@ export default {
     <div class="p-2">
       <div class="py-5">
         <p class="headline-2 my-5">Todo in Vue</p>
-        <form @submit.prevent="addTask">
+        <form v-on:submit.prevent="addTask">
           <div>
             <input
               id="task-input"
@@ -64,9 +85,13 @@ export default {
       <div
         class="py-1 px-5"
         v-for="taskInfo in this.demoTasks"
-        :key="taskInfo.id"
+        v-bind:key="taskInfo.id"
       >
-        <TaskCell :task-info="taskInfo" v-on:delTask="deleteTask($event)" />
+        <TaskCell
+          v-bind:task-info="taskInfo"
+          v-on:editTask="editTask($event)"
+          v-on:delTask="deleteTask($event)"
+        />
       </div>
     </div>
   </div>
