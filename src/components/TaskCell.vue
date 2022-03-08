@@ -14,7 +14,7 @@ export default {
       this.$emit("editTask", this.task.id);
     },
     toggleStatus() {
-      this.task.status = this.task.status === "done" ? "pending" : "done";
+      this.$emit("toggleStatus", this.task.id);
     },
   },
 };
@@ -29,12 +29,12 @@ export default {
           type="checkbox"
           id="done"
           value="true"
-          v-bind:checked="task.status === 'done'"
+          v-bind:checked="task.status"
           v-on:click="toggleStatus"
         />
         <p
           class="color-black container body-lg"
-          v-bind:class="{ strike: task.status === 'done' }"
+          v-bind:class="{ strike: task.status }"
         >
           {{ task.data }}
         </p>
@@ -42,7 +42,7 @@ export default {
       <div class="flex_container taskcell_inputs">
         <button
           class="btn primary sm my-2"
-          v-bind:disabled="task.status === 'done'"
+          v-bind:disabled="task.status"
           v-on:click="editTask"
         >
           Edit

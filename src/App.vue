@@ -8,22 +8,22 @@ export default {
         {
           data: "Sample task 1",
           id: 1646702392949,
-          status: "pending",
+          status: true,
         },
         {
           data: "Sample task 2",
           id: 1246702392949,
-          status: "done",
+          status: true,
         },
         {
           data: "Sample task 3",
           id: 1236723921949,
-          status: "pending",
+          status: false,
         },
         {
           data: "Sample task 4",
           id: 1246702392149,
-          status: "pending",
+          status: true,
         },
       ],
       newTask: "",
@@ -31,7 +31,6 @@ export default {
   },
   methods: {
     addTask() {
-      console.log(this.demoTasks);
       let check = true; //flag to check if task already exists
       this.demoTasks.map((task) => {
         if (task.data === this.newTask) {
@@ -42,7 +41,7 @@ export default {
         this.demoTasks.unshift({
           data: this.newTask,
           id: Date.now(),
-          status: "pending",
+          status: false,
         });
         this.newTask = ""; //reset task in input
       }
@@ -57,13 +56,19 @@ export default {
     },
     editTask(taskId) {
       this.demoTasks.map((task) => {
-        if (task.id == taskId) {
+        if (task.id === taskId) {
           //remove task from list and pass to input
           this.deleteTask(taskId);
           this.newTask = task.data;
         }
       });
-      console.log(this.demoTasks);
+    },
+    toggleStatus(taskId) {
+      this.demoTasks.map((task) => {
+        if (task.id === taskId) {
+          task.status = !task.status;
+        }
+      });
     },
   },
   components: { TaskCell },
@@ -95,6 +100,7 @@ export default {
           v-bind:task="task"
           v-on:editTask="editTask($event)"
           v-on:delTask="deleteTask($event)"
+          v-on:toggleStatus="toggleStatus($event)"
         />
       </div>
     </div>
@@ -116,14 +122,13 @@ button {
 }
 
 .input {
-  max-width: 100vw;
   height: 4rem;
 }
 
 .add_button {
   position: absolute;
   height: 3rem;
-  top: 1.3rem;
+  top: 1.2rem;
   right: 1rem;
   white-space: nowrap;
 }
