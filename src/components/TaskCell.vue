@@ -29,12 +29,12 @@ export default {
           type="checkbox"
           id="done"
           value="true"
-          v-bind:checked="task.status"
+          v-bind:checked="task.isCompleted"
           v-on:click="toggleStatus"
         />
         <p
           class="color-black container body-lg"
-          v-bind:class="{ strike: task.status }"
+          v-bind:class="{ strike: task.isCompleted }"
         >
           {{ task.data }}
         </p>
@@ -42,7 +42,7 @@ export default {
       <div class="flex_container taskcell_inputs">
         <button
           class="btn primary sm my-2"
-          v-bind:disabled="task.status"
+          v-bind:disabled="task.isCompleted"
           v-on:click="editTask"
         >
           Edit

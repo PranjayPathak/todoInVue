@@ -8,22 +8,22 @@ export default {
         {
           data: "Sample task 1",
           id: 1646702392949,
-          status: true,
+          isCompleted: true,
         },
         {
           data: "Sample task 2",
           id: 1246702392949,
-          status: true,
+          isCompleted: true,
         },
         {
           data: "Sample task 3",
           id: 1236723921949,
-          status: false,
+          isCompleted: false,
         },
         {
           data: "Sample task 4",
           id: 1246702392149,
-          status: true,
+          isCompleted: true,
         },
       ],
       newTask: "",
@@ -41,7 +41,7 @@ export default {
         this.demoTasks.unshift({
           data: this.newTask,
           id: Date.now(),
-          status: false,
+          isCompleted: false,
         });
         this.newTask = ""; //reset task in input
       }
@@ -66,7 +66,7 @@ export default {
     toggleStatus(taskId) {
       this.demoTasks.map((task) => {
         if (task.id === taskId) {
-          task.status = !task.status;
+          task.isCompleted = !task.isCompleted;
         }
       });
     },
