@@ -2,14 +2,12 @@
 export default {
   data() {
     return {
-      task: "",
       done: false, //checkbox input state
     };
   },
   props: {
-    taskInfo: {
+    task: {
       type: Object,
-      default: "default task",
       required: true,
     },
   },
@@ -21,9 +19,6 @@ export default {
       this.$emit("editTask", this.task.id);
     },
   },
-  mounted() {
-    this.task = this.taskInfo;
-  },
 };
 </script>
 
@@ -34,7 +29,7 @@ export default {
         class="color-black container body-lg col"
         v-bind:class="{ strike: done }"
       >
-        {{ this.task.data }}
+        {{ task.data }}
       </p>
       <div class="taskcell__inputs col-4">
         <div>
@@ -50,11 +45,11 @@ export default {
         <button
           class="btn primary sm"
           v-bind:disabled="done"
-          v-on:click="editTask()"
+          v-on:click="editTask"
         >
           Edit
         </button>
-        <button class="btn primary sm" v-on:click="deleteTask()">Delete</button>
+        <button class="btn primary sm" v-on:click="deleteTask">Delete</button>
       </div>
     </div>
   </div>

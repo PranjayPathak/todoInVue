@@ -7,19 +7,8 @@ export default {
       demoTasks: [
         {
           data: "demo task 1",
-          id: 0,
-        },
-        {
-          data: "demo task 2",
-          id: 1,
-        },
-        {
-          data: "demo task 3",
-          id: 2,
-        },
-        {
-          data: "demo task 4",
-          id: 3,
+          id: 1646702392949,
+          isDone: false,
         },
       ],
       newTask: "",
@@ -36,7 +25,7 @@ export default {
       if (check) {
         this.demoTasks.unshift({
           data: this.newTask,
-          id: this.demoTasks.length,
+          id: Date.now(),
         });
       }
     },
@@ -82,13 +71,9 @@ export default {
           </div>
         </form>
       </div>
-      <div
-        class="py-1 px-5"
-        v-for="taskInfo in this.demoTasks"
-        v-bind:key="taskInfo.id"
-      >
+      <div class="py-1 px-5" v-for="task in demoTasks" v-bind:key="task.id">
         <TaskCell
-          v-bind:task-info="taskInfo"
+          v-bind:task="task"
           v-on:editTask="editTask($event)"
           v-on:delTask="deleteTask($event)"
         />
