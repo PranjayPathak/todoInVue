@@ -1,15 +1,8 @@
 <script>
 export default {
-  data() {
-    return {
-      task: "",
-      done: false, //checkbox input state
-    };
-  },
   props: {
-    taskInfo: {
+    task: {
       type: Object,
-      default: "default task",
       required: true,
     },
   },
@@ -20,41 +13,43 @@ export default {
     editTask() {
       this.$emit("editTask", this.task.id);
     },
-  },
-  mounted() {
-    this.task = this.taskInfo;
+    toggleStatus() {
+      this.$emit("toggleStatus", this.task.id);
+    },
   },
 };
 </script>
 
 <template>
-  <div class="taskcell">
-    <div class="p-3 my-3 row rounded-sm bg-primary-200">
-      <p
-        class="color-black container body-lg col"
-        v-bind:class="{ strike: done }"
-      >
-        {{ this.task.data }}
-      </p>
-      <div class="taskcell__inputs col-4">
-        <div>
-          <label class="color-black" for="done">Done</label>
-          <input
-            type="checkbox"
-            maxlength="5"
-            id="done"
-            value="true"
-            v-model="done"
-          />
-        </div>
+  <div class="task_container">
+    <div class="flex_container p-2 my-2 rounded-sm bg-primary-200">
+      <div class="flex_container">
+        <input
+          class="taskcell_checkbox mx-2"
+          type="checkbox"
+          id="done"
+          value="true"
+          v-bind:checked="task.isCompleted"
+          v-on:click="toggleStatus"
+        />
+        <p
+          class="color-black container body-lg"
+          v-bind:class="{ strike: task.isCompleted }"
+        >
+          {{ task.data }}
+        </p>
+      </div>
+      <div class="flex_container taskcell_inputs">
         <button
-          class="btn primary sm"
-          v-bind:disabled="done"
-          v-on:click="editTask()"
+          class="btn primary sm my-2"
+          v-bind:disabled="task.isCompleted"
+          v-on:click="editTask"
         >
           Edit
         </button>
-        <button class="btn primary sm" v-on:click="deleteTask()">Delete</button>
+        <button class="btn error sm my-2" v-on:click="deleteTask">
+          Delete
+        </button>
       </div>
     </div>
   </div>
@@ -65,12 +60,20 @@ export default {
   color: #222222;
 }
 
-.taskcell__inputs {
+.flex_container {
   display: flex;
-  flex-direction: row;
+  justify-content: space-between;
   align-items: center;
   text-align: center;
-  justify-content: space-around;
+}
+
+.taskcell__checkbox {
+  width: 5rem;
+  height: 5rem;
+}
+
+.taskcell_inputs {
+  width: 10rem;
 }
 
 .strike {

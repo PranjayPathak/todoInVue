@@ -6,20 +6,24 @@ export default {
     return {
       demoTasks: [
         {
-          data: "demo task 1",
-          id: 0,
+          data: "Sample task 1",
+          id: 1646702392949,
+          isCompleted: true,
         },
         {
-          data: "demo task 2",
-          id: 1,
+          data: "Sample task 2",
+          id: 1246702392949,
+          isCompleted: true,
         },
         {
-          data: "demo task 3",
-          id: 2,
+          data: "Sample task 3",
+          id: 1236723921949,
+          isCompleted: false,
         },
         {
-          data: "demo task 4",
-          id: 3,
+          data: "Sample task 4",
+          id: 1246702392149,
+          isCompleted: true,
         },
       ],
       newTask: "",
@@ -36,8 +40,10 @@ export default {
       if (check) {
         this.demoTasks.unshift({
           data: this.newTask,
-          id: this.demoTasks.length,
+          id: Date.now(),
+          isCompleted: false,
         });
+        this.newTask = ""; //reset task in input
       }
     },
     deleteTask(taskId) {
@@ -49,12 +55,18 @@ export default {
       this.demoTasks = newDemoTasks;
     },
     editTask(taskId) {
-      console.log(taskId);
       this.demoTasks.map((task) => {
-        if (task.id == taskId) {
+        if (task.id === taskId) {
           //remove task from list and pass to input
           this.deleteTask(taskId);
           this.newTask = task.data;
+        }
+      });
+    },
+    toggleStatus(taskId) {
+      this.demoTasks.map((task) => {
+        if (task.id === taskId) {
+          task.isCompleted = !task.isCompleted;
         }
       });
     },
@@ -64,33 +76,31 @@ export default {
 </script>
 
 <template>
-  <div class="container bg-primary-600 rounded-sm m-10 shadow-2xl">
-    <div class="p-2">
-      <div class="py-5">
-        <p class="headline-2 my-5">Todo in Vue</p>
+  <div class="todo_container bg-primary-600 rounded-sm m-10 p-5 shadow-2xl">
+    <div>
+      <div>
+        <p class="headline-2 my-5">My Tasks</p>
         <form v-on:submit.prevent="addTask">
-          <div>
+          <div class="form_container">
             <input
               id="task-input"
-              class="input input-lg mt-3 mb-5"
+              class="input input-lg mt-3 mb-5 rounded-sm"
               v-model="newTask"
               placeholder="Please add new task"
+              maxlength="50"
               required="true"
               type="text"
             />
-            <button class="m-5 btn success p-5">Add +</button>
+            <button class="add_button m-5 btn success p-5">Add +</button>
           </div>
         </form>
       </div>
-      <div
-        class="py-1 px-5"
-        v-for="taskInfo in this.demoTasks"
-        v-bind:key="taskInfo.id"
-      >
+      <div class="p-1" v-for="task in demoTasks" v-bind:key="task.id">
         <TaskCell
-          v-bind:task-info="taskInfo"
+          v-bind:task="task"
           v-on:editTask="editTask($event)"
           v-on:delTask="deleteTask($event)"
+          v-on:toggleStatus="toggleStatus($event)"
         />
       </div>
     </div>
@@ -99,4 +109,31 @@ export default {
 
 <style>
 @import "./assets/base.css";
+.headline-2 {
+  text-align: center;
+}
+
+button {
+  font-weight: 600;
+}
+
+.form_container {
+  display: flex;
+}
+
+.input {
+  height: 4rem;
+}
+
+.add_button {
+  position: absolute;
+  height: 3rem;
+  top: 1.2rem;
+  right: 1rem;
+  white-space: nowrap;
+}
+
+.todo_container {
+  min-height: 90vh;
+}
 </style>
